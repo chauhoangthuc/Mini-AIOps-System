@@ -1,0 +1,103 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:vm="clr-namespace:ChatOps.ViewModel" xmlns:views="clr-namespace:ChatOps.Views" xmlns:charts="clr-namespace:ChatOps.Controls" x:Class="ChatOps.Views.ReplayView">
+  <UserControl.Resources><charts:SnapshotConverter x:Key="Snapshot"/></UserControl.Resources><ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel>
+    <WrapPanel>
+      <TextBlock Margin="0,3" TextWrapping="Wrap" Text="PC"/>
+      <TextBox Style="{StaticResource InputBox}" Margin="4" Width="100" Text="{Binding Pc, UpdateSourceTrigger=PropertyChanged}"/>
+      <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Mã sự cố"/>
+      <TextBox Style="{StaticResource InputBox}" Margin="4" Width="120" Text="{Binding IncidentId, UpdateSourceTrigger=PropertyChanged}"/>
+      <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Từ"/>
+      <DatePicker Margin="4" SelectedDate="{Binding From}"/>
+      <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Đến"/>
+      <DatePicker Margin="4" SelectedDate="{Binding To}"/>
+      <Button Margin="3" Content="Tìm kiếm" Style="{StaticResource PrimaryButton}" Command="{Binding Refresh}"/>
+    </WrapPanel>
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="2*"/>
+        <ColumnDefinition Width="3*"/>
+      </Grid.ColumnDefinitions>
+      <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="0">
+        <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+          <StackPanel>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Diễn biến" Style="{StaticResource SectionTitle}"/>
+            <ListBox MinHeight="210" Background="{StaticResource AppBackground}" Foreground="{StaticResource TextPrimary}" ItemsSource="{Binding Events}" SelectedItem="{Binding Current}">
+              <ListBox.ItemTemplate>
+                <DataTemplate>
+                  <StackPanel>
+                    <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding OccurredAt, TargetNullValue=—}"/>
+                    <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Title, TargetNullValue=—}"/>
+                  </StackPanel>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+          </StackPanel>
+        </Border>
+      </ContentControl>
+      <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="1">
+        <StackPanel>
+          <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+            <StackPanel>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Snapshot hệ thống" Style="{StaticResource SectionTitle}"/>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Current.SnapshotAt, TargetNullValue=Chưa có mẫu tại mốc này}"/>
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="0">
+                  <StackPanel>
+                    <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Cpu (%)"/>
+                    <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Current.Metrics.CpuPct, TargetNullValue=—}"/>
+                  </StackPanel>
+                </ContentControl>
+                <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="1">
+                  <StackPanel>
+                    <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Ram (%)"/>
+                    <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Current.Metrics.RamPct, TargetNullValue=—}"/>
+                  </StackPanel>
+                </ContentControl>
+                <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="2">
+                  <StackPanel>
+                    <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Disk (%)"/>
+                    <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Current.Metrics.DiskPct, TargetNullValue=—}"/>
+                  </StackPanel>
+                </ContentControl>
+              </Grid>
+            </StackPanel>
+          </Border>
+          <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+            <StackPanel>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Bằng chứng" Style="{StaticResource SectionTitle}"/>
+              <ItemsControl ItemsSource="{Binding Current.EvidenceRefs}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Expander Foreground="{StaticResource TextPrimary}" Header="{Binding Name}" Margin="0,4">
+                      <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Preview, TargetNullValue=—}"/>
+                    </Expander>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </StackPanel>
+          </Border>
+          <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+            <StackPanel>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Replay" Style="{StaticResource SectionTitle}"/>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Current.Title, TargetNullValue=—}"/>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Current.Description, TargetNullValue=—}"/>
+              <Image MaxHeight="280" Stretch="Uniform" Source="{Binding Current.ScreenshotBase64, Converter={StaticResource Snapshot}}"/>
+<Slider Minimum="0" Maximum="{Binding LastIndex}" Value="{Binding Index}" IsSnapToTickEnabled="True" TickFrequency="1"/>
+<WrapPanel>
+<Button Style="{StaticResource SecondaryButton}" Command="{Binding Play}" Content="{Binding PlayLabel}"/>
+<ComboBox ItemsSource="{Binding Speeds}" SelectedItem="{Binding Speed}" ToolTip="Tốc độ phát"/>
+
+                <Button Margin="3" Content="‹ Mốc trước" Style="{StaticResource SecondaryButton}" Command="{Binding Step}" CommandParameter="-1"/>
+                <Button Margin="3" Content="Mốc sau ›" Style="{StaticResource SecondaryButton}" Command="{Binding Step}" CommandParameter="1"/>
+              </WrapPanel>
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </ContentControl>
+    </Grid>
+  </StackPanel>
+</ScrollViewer></UserControl>

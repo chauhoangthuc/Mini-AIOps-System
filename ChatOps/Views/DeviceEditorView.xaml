@@ -1,0 +1,9 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:vm="clr-namespace:ChatOps.ViewModel" xmlns:views="clr-namespace:ChatOps.Views" xmlns:charts="clr-namespace:ChatOps.Controls" x:Class="ChatOps.Views.DeviceEditorView">
+  <StackPanel>
+    <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Prompt}"/>
+    <TextBox Style="{StaticResource InputBox}" Margin="4" Width="300" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+    <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Địa chỉ IP"/>
+    <TextBox Style="{StaticResource InputBox}" Margin="4" Width="300" IsReadOnly="{Binding Deleting}" Text="{Binding Ip, UpdateSourceTrigger=PropertyChanged}"/>
+    <Button Margin="3" Content="Xác nhận" Style="{StaticResource PrimaryButton}" Command="{Binding Save}"/>
+  </StackPanel>
+</UserControl>

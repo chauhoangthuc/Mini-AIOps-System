@@ -1,0 +1,9 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:vm="clr-namespace:ChatOps.ViewModel" xmlns:views="clr-namespace:ChatOps.Views" xmlns:charts="clr-namespace:ChatOps.Controls" x:Class="ChatOps.Views.LoginView">
+  <StackPanel>
+    <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Tên đăng nhập"/>
+    <TextBox Style="{StaticResource InputBox}" Margin="4" Width="300" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
+    <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Mật khẩu"/>
+    <PasswordBox x:Name="Secret" Width="300" Margin="4" Padding="7" Background="{StaticResource AppBackground}" Foreground="{StaticResource TextPrimary}"/>
+    <Button Content="Đăng nhập" Margin="4" IsDefault="True" Style="{StaticResource PrimaryButton}" Click="SignIn"/>
+  </StackPanel>
+</UserControl>

@@ -1,0 +1,147 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:vm="clr-namespace:ChatOps.ViewModel" xmlns:views="clr-namespace:ChatOps.Views" xmlns:charts="clr-namespace:ChatOps.Controls" x:Class="ChatOps.Views.ReportsView">
+  <ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel>
+    <WrapPanel>
+      <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Tuần chứa ngày"/>
+      <DatePicker Margin="4" SelectedDate="{Binding Week}"/>
+      <Button Margin="3" Content="Xem báo cáo" Style="{StaticResource SecondaryButton}" Command="{Binding Refresh}"/>
+    </WrapPanel>
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="0">
+        <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+          <StackPanel>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Phạm vi" Style="{StaticResource SectionTitle}"/>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.Scope, TargetNullValue=—}"/>
+          </StackPanel>
+        </Border>
+      </ContentControl>
+      <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="1">
+        <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+          <StackPanel>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Đối tượng" Style="{StaticResource SectionTitle}"/>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.Audience, TargetNullValue=—}"/>
+          </StackPanel>
+        </Border>
+      </ContentControl>
+      <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="2">
+        <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+          <StackPanel>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Trạng thái" Style="{StaticResource SectionTitle}"/>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.Status, TargetNullValue=—}"/>
+          </StackPanel>
+        </Border>
+      </ContentControl>
+    </Grid>
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="0">
+        <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+          <StackPanel>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Baseline tài nguyên" Style="{StaticResource SectionTitle}"/>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="CPU / RAM (%)"/>
+            <WrapPanel>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.Baseline.CpuPct, TargetNullValue=—}"/>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text=" / "/>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.Baseline.RamPct, TargetNullValue=—}"/>
+            </WrapPanel>
+          </StackPanel>
+        </Border>
+      </ContentControl>
+      <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="1">
+        <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+          <StackPanel>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Trung bình trong tuần" Style="{StaticResource SectionTitle}"/>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="CPU / RAM (%)"/>
+            <WrapPanel>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.Average.CpuPct, TargetNullValue=—}"/>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text=" / "/>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.Average.RamPct, TargetNullValue=—}"/>
+            </WrapPanel>
+          </StackPanel>
+        </Border>
+      </ContentControl>
+    </Grid>
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="0">
+        <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+          <StackPanel>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="CPU (%)" Style="{StaticResource SectionTitle}"/>
+            <charts:TrendPlot Samples="{Binding Data.CpuTrend}" Height="120" Percent="True"/>
+          </StackPanel>
+        </Border>
+      </ContentControl>
+      <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="1">
+        <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+          <StackPanel>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="RAM (%)" Style="{StaticResource SectionTitle}"/>
+            <charts:TrendPlot Samples="{Binding Data.RamTrend}" Height="120" Percent="True"/>
+          </StackPanel>
+        </Border>
+      </ContentControl>
+      <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="2">
+        <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+          <StackPanel>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Dự báo dung lượng đĩa" Style="{StaticResource SectionTitle}"/>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.DiskForecast, TargetNullValue=—}"/>
+            <charts:TrendPlot Samples="{Binding Data.DiskTrend}" Height="120" Percent="False"/>
+          </StackPanel>
+        </Border>
+      </ContentControl>
+    </Grid>
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="0">
+        <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+          <StackPanel>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Tóm tắt tuần" Style="{StaticResource SectionTitle}"/>
+            <ItemsControl ItemsSource="{Binding Data.Summary}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding}"/>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+      </ContentControl>
+      <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="1">
+        <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+          <StackPanel>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Nhận định vận hành" Style="{StaticResource SectionTitle}"/>
+            <ItemsControl ItemsSource="{Binding Data.Insights}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding}"/>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+      </ContentControl>
+      <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="2">
+        <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+          <StackPanel>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Dự báo gần nhất" Style="{StaticResource SectionTitle}"/>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.ForecastAt, TargetNullValue=—}"/>
+          </StackPanel>
+        </Border>
+      </ContentControl>
+    </Grid>
+  </StackPanel>
+</ScrollViewer></UserControl>

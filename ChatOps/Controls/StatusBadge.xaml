@@ -1,0 +1,8 @@
+<UserControl x:Class="ChatOps.Controls.StatusBadge"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Name="Badge" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3">
+    <Border x:Name="Surface" Style="{StaticResource NeutralBadge}">
+        <TextBlock Text="{Binding Label, ElementName=Badge}"/>
+    </Border>
+</UserControl>
