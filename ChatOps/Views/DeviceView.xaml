@@ -1,0 +1,128 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:vm="clr-namespace:ChatOps.ViewModel" xmlns:views="clr-namespace:ChatOps.Views" xmlns:charts="clr-namespace:ChatOps.Controls" x:Class="ChatOps.Views.DeviceView">
+  <StackPanel>
+    <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+      <StackPanel>
+        <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Nhận dạng thiết bị" Style="{StaticResource SectionTitle}"/>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+          <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="0">
+            <StackPanel>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.Device.PcName, TargetNullValue=—}"/>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.Device.Ip, TargetNullValue=—}"/>
+            </StackPanel>
+          </ContentControl>
+          <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="1">
+            <StackPanel>
+              <charts:StatusBadge Label="{Binding Data.Device.Connection}"/><TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.LastSeenAt, TargetNullValue=—}"/>
+            </StackPanel>
+          </ContentControl>
+        </Grid>
+      </StackPanel>
+    </Border>
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="0">
+        <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+          <StackPanel>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="CPU (%)" Style="{StaticResource SectionTitle}"/>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.Device.CpuPct, TargetNullValue=—}"/>
+          </StackPanel>
+        </Border>
+      </ContentControl>
+      <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="1">
+        <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+          <StackPanel>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="RAM (%)" Style="{StaticResource SectionTitle}"/>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.Device.RamPct, TargetNullValue=—}"/>
+          </StackPanel>
+        </Border>
+      </ContentControl>
+      <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="2">
+        <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+          <StackPanel>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Disk (%)" Style="{StaticResource SectionTitle}"/>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.DiskPct, TargetNullValue=—}"/>
+          </StackPanel>
+        </Border>
+      </ContentControl>
+      <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="3">
+        <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+          <StackPanel>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="App health" Style="{StaticResource SectionTitle}"/>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.AppHealth, TargetNullValue=—}"/>
+          </StackPanel>
+        </Border>
+      </ContentControl>
+    </Grid>
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="0">
+        <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+          <StackPanel>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Cpu (%)" Style="{StaticResource SectionTitle}"/>
+            <charts:TrendPlot Samples="{Binding Data.CpuTrend}" Height="120" Percent="True"/>
+          </StackPanel>
+        </Border>
+      </ContentControl>
+      <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="1">
+        <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+          <StackPanel>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Ram (%)" Style="{StaticResource SectionTitle}"/>
+            <charts:TrendPlot Samples="{Binding Data.RamTrend}" Height="120" Percent="True"/>
+          </StackPanel>
+        </Border>
+      </ContentControl>
+      <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="2">
+        <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+          <StackPanel>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Disk (%)" Style="{StaticResource SectionTitle}"/>
+            <charts:TrendPlot Samples="{Binding Data.DiskTrend}" Height="120" Percent="True"/>
+          </StackPanel>
+        </Border>
+      </ContentControl>
+    </Grid>
+    <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+      <StackPanel>
+        <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Sự cố gần đây" Style="{StaticResource SectionTitle}"/>
+        <DataGrid AutomationProperties.Name="Danh sách" Style="{StaticResource SocTable}" IsReadOnly="True" SelectionMode="Single" CanUserAddRows="False" AutoGenerateColumns="False" MinHeight="100" MaxHeight="480" ItemsSource="{Binding Data.Incidents}">
+          <DataGrid.Columns>
+            <DataGridTextColumn Header="Mã sự cố" Width="Auto" Binding="{Binding IncidentId, TargetNullValue=—}"/>
+            <DataGridTextColumn Header="Tiêu đề" Width="*" Binding="{Binding Title, TargetNullValue=—}"/>
+            <DataGridTextColumn Header="Thiết bị" Width="*" Binding="{Binding PcName, TargetNullValue=—}"/>
+            <DataGridTemplateColumn Header="Mức độ">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <charts:StatusBadge Label="{Binding Severity}"/></DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="Trạng thái">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <charts:StatusBadge Label="{Binding WorkflowState}"/></DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="Thao tác">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <Button Margin="2" Style="{StaticResource SecondaryButton}" Content="Chi tiết" Command="{Binding DataContext.Open, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}"/>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+          </DataGrid.Columns>
+        </DataGrid>
+      </StackPanel>
+    </Border>
+  </StackPanel>
+</UserControl>

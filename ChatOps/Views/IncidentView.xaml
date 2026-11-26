@@ -1,0 +1,109 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:vm="clr-namespace:ChatOps.ViewModel" xmlns:views="clr-namespace:ChatOps.Views" xmlns:charts="clr-namespace:ChatOps.Controls" x:Class="ChatOps.Views.IncidentView">
+  <StackPanel>
+    <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+      <StackPanel>
+        <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Thông tin sự cố" Style="{StaticResource SectionTitle}"/>
+        <WrapPanel>
+          <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.Incident.IncidentId}" Style="{StaticResource SectionTitle}"/>
+          <charts:StatusBadge Label="{Binding Data.Incident.Severity}"/><charts:StatusBadge Label="{Binding Data.Incident.WorkflowState}"/></WrapPanel>
+        <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.Incident.Title, TargetNullValue=—}"/>
+        <WrapPanel>
+          <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.Incident.PcName, TargetNullValue=—}"/>
+          <TextBlock Margin="0,3" TextWrapping="Wrap" Text="   ·   "/>
+          <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.Incident.Ip, TargetNullValue=—}"/>
+          <TextBlock Margin="0,3" TextWrapping="Wrap" Text="   ·   "/>
+          <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.Incident.DetectedAt, TargetNullValue=—}"/>
+        </WrapPanel>
+      </StackPanel>
+    </Border>
+    <WrapPanel Margin="0,0,0,8"><Button Content="Chi tiết" Tag="Timeline" Click="JumpToSection" Style="{StaticResource SecondaryButton}" Margin="0,0,5,0"/><Button Content="Bằng chứng" Tag="Evidence" Click="JumpToSection" Style="{StaticResource SecondaryButton}" Margin="0,0,5,0"/><Button Content="Phân tích AI" Tag="Analysis" Click="JumpToSection" Style="{StaticResource SecondaryButton}" Margin="0,0,5,0"/><Button Content="Đề xuất &amp; Xác minh" Tag="Decision" Click="JumpToSection" Style="{StaticResource SecondaryButton}" Margin="0,0,5,0"/></WrapPanel><Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="2*"/>
+        <ColumnDefinition Width="3*"/>
+      </Grid.ColumnDefinitions>
+      <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="0">
+        <Border Style="{StaticResource Card}" Margin="0,0,10,12" x:Name="Timeline">
+          <StackPanel>
+            <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Diễn biến sự cố" Style="{StaticResource SectionTitle}"/>
+            <ItemsControl ItemsSource="{Binding Data.Events}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <StackPanel>
+                    <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding OccurredAt, TargetNullValue=—}"/>
+                    <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Title}" Style="{StaticResource SectionTitle}"/>
+                    <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Description, TargetNullValue=—}"/>
+                  </StackPanel>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Button Margin="3" Content="Xem Replay" Style="{StaticResource SecondaryButton}" Command="{Binding Replay}"/>
+          </StackPanel>
+        </Border>
+      </ContentControl>
+      <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="1">
+        <StackPanel>
+          <Border Style="{StaticResource Card}" Margin="0,0,10,12" x:Name="Evidence">
+            <StackPanel>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Bằng chứng" Style="{StaticResource SectionTitle}"/>
+              <ItemsControl ItemsSource="{Binding Data.EvidenceRefs}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Expander Foreground="{StaticResource TextPrimary}" Header="{Binding Name}" Margin="0,4">
+                      <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Preview, TargetNullValue=—}"/>
+                    </Expander>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </StackPanel>
+          </Border>
+          <Border Style="{StaticResource Card}" Margin="0,0,10,12" x:Name="Analysis">
+            <StackPanel>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Phân tích AI" Style="{StaticResource SectionTitle}"/>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.Diagnosis, TargetNullValue=Cần xem xét thủ công}"/>
+            </StackPanel>
+          </Border>
+          <Border Style="{StaticResource Card}" Margin="0,0,10,12" x:Name="Decision">
+            <StackPanel>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Đề xuất xử lý" Style="{StaticResource SectionTitle}"/>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.ProposedAction, TargetNullValue=—}"/>
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="0">
+                  <StackPanel>
+                    <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Đối tượng · Dịch vụ" Style="{StaticResource SecondaryText}"/>
+                    <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Request.Target, TargetNullValue=—}"/>
+                    <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Request.Service, TargetNullValue=—}"/>
+                  </StackPanel>
+                </ContentControl>
+                <ContentControl HorizontalContentAlignment="Stretch" Grid.Column="1">
+                  <StackPanel>
+                    <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Người đề xuất · Hạn duyệt" Style="{StaticResource SecondaryText}"/>
+                    <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Request.Proposer, TargetNullValue=—}"/>
+                    <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Request.ExpiresAt, TargetNullValue=—}"/>
+                  </StackPanel>
+                </ContentControl>
+              </Grid>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding DecisionHint}"/>
+              <WrapPanel>
+                <WrapPanel.Style><Style TargetType="WrapPanel"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Request.Status}" Value="pending"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></WrapPanel.Style><Button Margin="3" Content="✕  Từ chối" Style="{StaticResource DangerButton}" Command="{Binding Decide}" CommandParameter="reject"/>
+                <Button Margin="3" Content="✓  Phê duyệt" Style="{StaticResource PrimaryButton}" Command="{Binding Decide}" CommandParameter="approve"/>
+              </WrapPanel>
+            </StackPanel>
+          </Border>
+          <Border Style="{StaticResource Card}" Margin="0,0,10,12">
+            <StackPanel>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Xác minh" Style="{StaticResource SectionTitle}"/>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Trạng thái thực thi" Style="{StaticResource SecondaryText}"/>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.TaskStatus, TargetNullValue=—}"/>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text="Kết quả health probe" Style="{StaticResource SecondaryText}"/>
+              <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding Data.ProbeResult, TargetNullValue=—}"/>
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </ContentControl>
+    </Grid>
+  </StackPanel>
+</UserControl>

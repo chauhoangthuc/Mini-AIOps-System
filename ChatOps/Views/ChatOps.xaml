@@ -1,0 +1,36 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:vm="clr-namespace:ChatOps.ViewModel" xmlns:views="clr-namespace:ChatOps.Views" xmlns:charts="clr-namespace:ChatOps.Controls" x:Class="ChatOps.Views.ChatOpsWindow" Title="ChatOps Guardian" Width="1280" Height="760" MinWidth="850" MinHeight="560" Background="{StaticResource AppBackground}" Foreground="{StaticResource TextPrimary}" FontFamily="{StaticResource AppFont}" FontSize="14" WindowStartupLocation="CenterScreen">
+  <Window.Resources>
+    <BooleanToVisibilityConverter x:Key="Visible"/>
+  </Window.Resources>
+  <DockPanel>
+    <Border DockPanel.Dock="Top" BorderBrush="{StaticResource BorderBrushSubtle}" BorderThickness="0,0,0,1" Padding="18,8">
+      <DockPanel>
+        <Button DockPanel.Dock="Right" Content="{Binding SessionAction}" Command="{Binding Account}" Style="{StaticResource SecondaryButton}"/>
+        <TextBlock DockPanel.Dock="Right" Text="{Binding Identity}" Margin="12,0" VerticalAlignment="Center"/>
+        <TextBlock Text="⬡   ChatOps Guardian" FontSize="20" FontWeight="SemiBold" VerticalAlignment="Center"/>
+      </DockPanel>
+    </Border>
+    <views:SidebarView x:Name="SidebarMenu" DockPanel.Dock="Left"/>
+    <Grid Margin="18">
+      <TextBlock Text="{Binding Notice}" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <TextBlock.Style>
+          <Style TargetType="TextBlock">
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding SignedIn}" Value="True">
+                <Setter Property="Visibility" Value="Collapsed"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </TextBlock.Style>
+      </TextBlock>
+      <DockPanel Visibility="{Binding SignedIn,Converter={StaticResource Visible}}">
+        <DockPanel DockPanel.Dock="Top">
+          <Button Content="Tải lại" DockPanel.Dock="Right" Style="{StaticResource SecondaryButton}" Command="{Binding SelectedPage.Refresh}"/>
+          <TextBlock Margin="0,3" TextWrapping="Wrap" Text="{Binding SelectedPage.Title}" Style="{StaticResource PageTitle}"/>
+        </DockPanel>
+        <TextBlock DockPanel.Dock="Top" Margin="0,5" Foreground="{StaticResource WarningForeground}" Text="{Binding SelectedPage.Message}"/>
+        <ContentControl Content="{Binding SelectedPage}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+        </DockPanel>
+    </Grid>
+  </DockPanel>
+</Window>

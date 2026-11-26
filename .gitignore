@@ -216,3 +216,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+/ChatOps/bin/Debug/net10.0-windows
+/ChatOps/obj
+/ChatOps/.vs
+/.vs
